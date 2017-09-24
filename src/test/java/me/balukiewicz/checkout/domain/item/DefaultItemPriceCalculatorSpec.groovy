@@ -7,17 +7,19 @@ class DefaultItemPriceCalculatorSpec extends Specification{
 
     def itemPriceCalculator
     def ItemRepository itemRepository
+    def ItemPromotionRepository itemPromotionRepository
 
     def setup() {
         itemRepository = Stub(ItemRepository.class)
-        itemPriceCalculator = new DefaultItemPriceCalculator(itemRepository)
+        itemPromotionRepository = Stub(ItemPromotionRepository.class)
+        itemPriceCalculator = new DefaultItemPriceCalculator(itemRepository, itemPromotionRepository)
     }
 
     def "should calculate price for item without quantity promotion"() {
         given:
             def item1 = new Item("id1", 2, 0, 0)
             def itemQuantity1 = new ItemQuantity("id1", 5L)
-            itemRepository.findById("id1") >> item1
+            itemRepository.findById("id1") >> Optional.of(item1)
 
         when:
             def finalPrice = itemPriceCalculator.calculateFinalPrice(itemQuantity1)
@@ -25,7 +27,7 @@ class DefaultItemPriceCalculatorSpec extends Specification{
 
         then:
             finalPrice.id == "id1"
-            finalPrice.quantity = 5L
+            finalPrice.quantity == 5L
             finalPrice.finalPrice == BigDecimal.valueOf(10)
     }
 
@@ -33,7 +35,7 @@ class DefaultItemPriceCalculatorSpec extends Specification{
         given:
             def item1 = new Item("id1", 2, 4, 1)
             def itemQuantity1 = new ItemQuantity("id1", 10L)
-            itemRepository.findById("id1") >> item1
+            itemRepository.findById("id1") >> Optional.of(item1)
 
         when:
             def finalPrice = itemPriceCalculator.calculateFinalPrice(itemQuantity1)
@@ -41,7 +43,7 @@ class DefaultItemPriceCalculatorSpec extends Specification{
 
         then:
             finalPrice.id == "id1"
-            finalPrice.quantity = 10L
+            finalPrice.quantity == 10L
             finalPrice.finalPrice == BigDecimal.valueOf(6)
     }
 
