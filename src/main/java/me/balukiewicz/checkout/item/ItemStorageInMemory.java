@@ -1,30 +1,31 @@
-package me.balukiewicz.checkout.domain.item;
+package me.balukiewicz.checkout.item;
 
 import com.google.common.collect.Maps;
-import java.util.List;
+import me.balukiewicz.checkout.item.dto.ItemQuantity;
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-class InMemoryItemStorage implements ItemStorage {
+class ItemStorageInMemory implements ItemStorage {
 
     private final ItemRepository itemRepository;
     private final Map<String, Long> items;
 
-    InMemoryItemStorage(ItemRepository itemRepository) {
+    ItemStorageInMemory(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
         this.items = Maps.newConcurrentMap();
     }
 
     @Override
-    public void store(String id, Long quantity) {
-        if(!itemRepository.exists(id)) {
-            throw new ItemNotFoundException("Item with id:" + id + " not found");
+    public void store(ItemQuantity itemQuantity) {
+        if(!itemRepository.exists(itemQuantity.getId())) {
+            throw new ItemNotFoundException("Item with id:" + itemQuantity.getId() + " not found");
         }
 
-        if(items.putIfAbsent(id, quantity) != null) {
-            items.computeIfPresent(id, (k, v) -> v + quantity);
+        if(items.putIfAbsent(itemQuantity.getId(), itemQuantity.getQuantity()) != null) {
+            items.computeIfPresent(itemQuantity.getId(), (k, v) -> v + itemQuantity.getQuantity());
         }
     }
 
@@ -40,6 +41,13 @@ class InMemoryItemStorage implements ItemStorage {
                 .map(entry -> new ItemQuantity(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toSet());
     }
+
+    @Override
+    public void clear() {
+        items.clear();
+    }
+
+
 }
 
 

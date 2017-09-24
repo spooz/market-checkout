@@ -1,16 +1,19 @@
-package me.balukiewicz.checkout.domain.item;
+package me.balukiewicz.checkout.item;
 
+
+import me.balukiewicz.checkout.item.dto.ItemFinalPrice;
+import me.balukiewicz.checkout.item.dto.ItemQuantity;
 
 import java.math.BigDecimal;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-class DefaultItemPriceCalculator implements ItemPriceCalculator {
+class ItemPriceCalculatorDefault implements ItemPriceCalculator {
 
     private final ItemRepository itemRepository;
     private final ItemPromotionRepository itemPromotionRepository;
 
-    DefaultItemPriceCalculator(ItemRepository itemRepository, ItemPromotionRepository itemPromotionRepository) {
+    ItemPriceCalculatorDefault(ItemRepository itemRepository, ItemPromotionRepository itemPromotionRepository) {
         this.itemRepository = itemRepository;
         this.itemPromotionRepository = itemPromotionRepository;
     }

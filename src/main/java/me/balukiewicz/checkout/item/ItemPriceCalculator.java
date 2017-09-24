@@ -1,4 +1,7 @@
-package me.balukiewicz.checkout.domain.item;
+package me.balukiewicz.checkout.item;
+
+import me.balukiewicz.checkout.item.dto.ItemFinalPrice;
+import me.balukiewicz.checkout.item.dto.ItemQuantity;
 
 import java.util.Set;
 

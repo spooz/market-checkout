@@ -1,4 +1,4 @@
-package me.balukiewicz.checkout.domain.item;
+package me.balukiewicz.checkout.item;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

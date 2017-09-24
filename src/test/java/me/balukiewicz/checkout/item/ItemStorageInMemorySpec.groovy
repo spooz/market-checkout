@@ -1,25 +1,27 @@
-package me.balukiewicz.checkout.domain.item
+package me.balukiewicz.checkout.item
 
+import me.balukiewicz.checkout.item.dto.ItemQuantity
 import spock.lang.Specification
 
-class InMemoryItemStorageSpec extends Specification {
+class ItemStorageInMemorySpec extends Specification {
 
     def itemStorage
     def itemRepository
 
     def setup() {
         itemRepository = Stub(ItemRepository.class)
-        itemStorage = new InMemoryItemStorage(itemRepository)
+        itemStorage = new ItemStorageInMemory(itemRepository)
     }
 
     def "should store item with correct id and new quantity"() {
         given:
             def id = "id1"
             def quantity = 1L;
+            def itemQuantity = new ItemQuantity(id, quantity)
             itemRepository.exists(id) >> true
 
         when:
-            itemStorage.store(id, quantity)
+            itemStorage.store(itemQuantity)
 
         then:
             itemStorage.getQuantity(id).get() == quantity
@@ -31,11 +33,14 @@ class InMemoryItemStorageSpec extends Specification {
             def quantity = 1L
             def newQuantity = 2L
 
+            def itemQuantity = new ItemQuantity(id, quantity)
+            def newItemQuantity = new ItemQuantity(id, newQuantity)
+
             itemRepository.exists(id) >> true
-            itemStorage.store(id, quantity)
+            itemStorage.store(itemQuantity)
 
         when:
-            itemStorage.store(id, newQuantity)
+            itemStorage.store(newItemQuantity)
 
         then:
             itemStorage.getQuantity(id).get() == quantity + newQuantity
@@ -45,11 +50,11 @@ class InMemoryItemStorageSpec extends Specification {
         given:
             def id = "id1"
             def quantity = 1L
-
+            def itemQuantity = new ItemQuantity(id, quantity)
             itemRepository.exists(id) >> false
 
         when:
-            itemStorage.store(id, quantity)
+            itemStorage.store(itemQuantity)
 
         then:
             thrown ItemNotFoundException
@@ -60,9 +65,9 @@ class InMemoryItemStorageSpec extends Specification {
         given:
             def id = "id1"
             def quantity = 1L
-
+            def itemQuantity = new ItemQuantity(id, quantity)
             itemRepository.exists(id) >> true
-            itemStorage.store(id, quantity)
+            itemStorage.store(itemQuantity)
 
         when:
             def returnedQuantity = itemStorage.getQuantity(id)

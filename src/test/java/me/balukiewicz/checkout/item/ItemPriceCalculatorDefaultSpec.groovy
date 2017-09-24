@@ -1,9 +1,9 @@
-package me.balukiewicz.checkout.domain.item
+package me.balukiewicz.checkout.item
 
-import com.google.common.collect.Sets
+import me.balukiewicz.checkout.item.dto.ItemQuantity
 import spock.lang.Specification
 
-class DefaultItemPriceCalculatorSpec extends Specification{
+class ItemPriceCalculatorDefaultSpec extends Specification{
 
     def itemPriceCalculator
     def ItemRepository itemRepository
@@ -12,7 +12,7 @@ class DefaultItemPriceCalculatorSpec extends Specification{
     def setup() {
         itemRepository = Stub(ItemRepository.class)
         itemPromotionRepository = Stub(ItemPromotionRepository.class)
-        itemPriceCalculator = new DefaultItemPriceCalculator(itemRepository, itemPromotionRepository)
+        itemPriceCalculator = new ItemPriceCalculatorDefault(itemRepository, itemPromotionRepository)
     }
 
     def "should calculate price for item without quantity promotion"() {

@@ -1,4 +1,4 @@
-package me.balukiewicz.checkout.domain.item;
+package me.balukiewicz.checkout.item;
 
 public class ItemNotFoundException extends RuntimeException {
 
