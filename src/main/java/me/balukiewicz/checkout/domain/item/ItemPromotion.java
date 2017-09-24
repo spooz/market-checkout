@@ -8,9 +8,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 @Data
 @Document
 class ItemPromotion {
-    @Id
-    private String id;
 
+    @Id
     private String item_id_first;
     private String item_id_second;
     private Double discount;

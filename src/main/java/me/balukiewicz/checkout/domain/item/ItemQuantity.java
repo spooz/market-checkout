@@ -11,4 +11,6 @@ class ItemQuantity {
         this.id = id;
         this.quantity = quantity;
     }
+
+
 }

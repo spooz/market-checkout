@@ -1,11 +1,15 @@
 package me.balukiewicz.checkout.domain.item;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.util.Optional;
+
 @Data
+@AllArgsConstructor
 @Document
 class Item {
 
@@ -21,4 +25,5 @@ class Item {
 
 interface ItemRepository extends MongoRepository<Item, String> {
 
+    Optional<Item> findById(String id);
 }

@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 class InMemoryItemStorage implements ItemStorage {
@@ -33,11 +34,11 @@ class InMemoryItemStorage implements ItemStorage {
     }
 
     @Override
-    public List<ItemQuantity> getAll() {
+    public Set<ItemQuantity> getAll() {
         return items.entrySet()
                 .stream()
                 .map(entry -> new ItemQuantity(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 }
 

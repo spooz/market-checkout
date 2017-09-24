@@ -2,7 +2,7 @@ package me.balukiewicz.checkout.domain.item
 
 import spock.lang.Specification
 
-class InMemoryItemStorageTest extends Specification {
+class InMemoryItemStorageSpec extends Specification {
 
     def itemStorage
     def itemRepository
