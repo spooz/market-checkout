@@ -1,6 +1,9 @@
 package me.balukiewicz.checkout.item
 
+import me.balukiewicz.checkout.item.domain.ItemRepository
 import me.balukiewicz.checkout.item.dto.ItemQuantity
+import me.balukiewicz.checkout.item.exception.ItemNotFoundException
+import me.balukiewicz.checkout.item.storage.ItemStorageInMemory
 import spock.lang.Specification
 
 class ItemStorageInMemorySpec extends Specification {

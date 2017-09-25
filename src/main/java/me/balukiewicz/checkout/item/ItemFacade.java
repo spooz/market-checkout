@@ -1,8 +1,10 @@
 package me.balukiewicz.checkout.item;
 
 import lombok.AllArgsConstructor;
+import me.balukiewicz.checkout.item.calculator.ItemPriceCalculator;
 import me.balukiewicz.checkout.item.dto.CheckoutReport;
 import me.balukiewicz.checkout.item.dto.ItemQuantity;
+import me.balukiewicz.checkout.item.storage.ItemStorage;
 
 import java.math.BigDecimal;
 

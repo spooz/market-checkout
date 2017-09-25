@@ -1,4 +1,4 @@
-package me.balukiewicz.checkout.item;
+package me.balukiewicz.checkout.item.domain;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 @Data
 @Document
-class ItemPromotion {
+public class ItemPromotion {
 
     @Id
     private String item_id_first;
@@ -15,6 +15,3 @@ class ItemPromotion {
     private Double discount;
 }
 
-interface ItemPromotionRepository extends MongoRepository<ItemPromotion, String> {
-
-}

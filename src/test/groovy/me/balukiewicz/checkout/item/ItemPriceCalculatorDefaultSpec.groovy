@@ -1,6 +1,11 @@
 package me.balukiewicz.checkout.item
 
+import me.balukiewicz.checkout.item.calculator.ItemPriceCalculatorDefault
+import me.balukiewicz.checkout.item.domain.Item
+import me.balukiewicz.checkout.item.domain.ItemPromotionRepository
+import me.balukiewicz.checkout.item.domain.ItemRepository
 import me.balukiewicz.checkout.item.dto.ItemQuantity
+import me.balukiewicz.checkout.item.exception.ItemNotFoundException
 import spock.lang.Specification
 
 class ItemPriceCalculatorDefaultSpec extends Specification{

@@ -1,6 +1,8 @@
-package me.balukiewicz.checkout.item;
+package me.balukiewicz.checkout.item.storage;
 
 import com.google.common.collect.Maps;
+import me.balukiewicz.checkout.item.exception.ItemNotFoundException;
+import me.balukiewicz.checkout.item.domain.ItemRepository;
 import me.balukiewicz.checkout.item.dto.ItemQuantity;
 
 import java.util.Map;
@@ -8,12 +10,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-class ItemStorageInMemory implements ItemStorage {
+public class ItemStorageInMemory implements ItemStorage {
 
     private final ItemRepository itemRepository;
     private final Map<String, Long> items;
 
-    ItemStorageInMemory(ItemRepository itemRepository) {
+    public ItemStorageInMemory(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
         this.items = Maps.newConcurrentMap();
     }

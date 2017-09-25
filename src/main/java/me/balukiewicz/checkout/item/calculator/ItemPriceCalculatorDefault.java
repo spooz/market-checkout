@@ -1,6 +1,10 @@
-package me.balukiewicz.checkout.item;
+package me.balukiewicz.checkout.item.calculator;
 
 
+import me.balukiewicz.checkout.item.exception.ItemNotFoundException;
+import me.balukiewicz.checkout.item.domain.Item;
+import me.balukiewicz.checkout.item.domain.ItemPromotionRepository;
+import me.balukiewicz.checkout.item.domain.ItemRepository;
 import me.balukiewicz.checkout.item.dto.ItemFinalPrice;
 import me.balukiewicz.checkout.item.dto.ItemQuantity;
 
@@ -8,12 +12,12 @@ import java.math.BigDecimal;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-class ItemPriceCalculatorDefault implements ItemPriceCalculator {
+public class ItemPriceCalculatorDefault implements ItemPriceCalculator {
 
     private final ItemRepository itemRepository;
     private final ItemPromotionRepository itemPromotionRepository;
 
-    ItemPriceCalculatorDefault(ItemRepository itemRepository, ItemPromotionRepository itemPromotionRepository) {
+    public ItemPriceCalculatorDefault(ItemRepository itemRepository, ItemPromotionRepository itemPromotionRepository) {
         this.itemRepository = itemRepository;
         this.itemPromotionRepository = itemPromotionRepository;
     }

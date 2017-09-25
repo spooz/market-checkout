@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import me.balukiewicz.checkout.item.dto.CheckoutReport;
 import me.balukiewicz.checkout.item.ItemFacade;
-import me.balukiewicz.checkout.item.ItemNotFoundException;
+import me.balukiewicz.checkout.item.exception.ItemNotFoundException;
 import me.balukiewicz.checkout.item.dto.ItemQuantity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

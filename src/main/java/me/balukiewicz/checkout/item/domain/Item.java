@@ -1,4 +1,4 @@
-package me.balukiewicz.checkout.item;
+package me.balukiewicz.checkout.item.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.util.Optional;
 @Data
 @AllArgsConstructor
 @Document
-class Item {
+public class Item {
 
     @Id
     private String id;
@@ -21,9 +21,4 @@ class Item {
     private Long promUnit;
 
     private Double promPrice;
-}
-
-interface ItemRepository extends MongoRepository<Item, String> {
-
-    Optional<Item> findById(String id);
 }
