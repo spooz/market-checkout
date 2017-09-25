@@ -23,11 +23,10 @@ public class ItemFacade {
     public CheckoutReport checkout() {
         Set<ItemFinalPrice> itemFinalPrices = itemPriceCalculator.calculateFinalItemPrices(itemStorage.getAll());
         BigDecimal promotion = itemPriceCalculator.calculatePromotionForItems(itemFinalPrices);
-        BigDecimal finalPrice = itemPriceCalculator.calculateFinalPriceForItems(itemFinalPrices);
+        BigDecimal finalPrice = itemPriceCalculator.calculateFinalPriceForItems(itemPriceCalculator.calculateSumPriceForItems(itemFinalPrices),promotion);
         CheckoutReport checkoutReport = new CheckoutReport(itemFinalPrices, promotion, finalPrice);
         itemStorage.clear();
         return checkoutReport;
     }
-
 
 }

@@ -9,8 +9,8 @@ import java.util.Set;
 public interface ItemPriceCalculator {
     Set<ItemFinalPrice> calculateFinalItemPrices(Set<ItemQuantity> items);
     ItemFinalPrice calculateFinalItemPrice(ItemQuantity item);
-
-    BigDecimal calculateFinalPriceForItems(Set<ItemFinalPrice> items);
-
+    BigDecimal calculateSumPriceForItems(Set<ItemFinalPrice> items);
     BigDecimal calculatePromotionForItems(Set<ItemFinalPrice> items);
+
+    BigDecimal calculateFinalPriceForItems(BigDecimal sumPrice, BigDecimal promotion);
 }

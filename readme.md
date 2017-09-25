@@ -43,12 +43,13 @@ Other components:
 - **ItemConfig** is a centralized Spring Bean config, instead of class annotation - makes it easier to review and debug
 
 
-Unit tests cover hard logic: storage and price calculation. Classes are tested separately but could as well by tested through the facade.
+Unit tests cover hard logic: storage and price calculation. Classes are tested separately but could be as well by tested through the facade.
 
 
 ### Things to improve
+- item data endpoints
 - unit, integration, e2e tests gradle task separation
 - use of real mongodb server
 - docker-compose file to make deployment easier
-- instead of in memory storage usege of standalone cache (Redis?)
-- cachable items data 
+- instead of in memory storage, usege of standalone cache (Redis?)
+- cachable item repositories

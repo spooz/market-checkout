@@ -1,6 +1,7 @@
 package me.balukiewicz.checkout.item.calculator;
 
 
+import lombok.AllArgsConstructor;
 import me.balukiewicz.checkout.item.domain.ItemPromotion;
 import me.balukiewicz.checkout.item.exception.ItemNotFoundException;
 import me.balukiewicz.checkout.item.domain.Item;
@@ -13,15 +14,11 @@ import java.math.BigDecimal;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 public class ItemPriceCalculatorDefault implements ItemPriceCalculator {
 
     private final ItemRepository itemRepository;
     private final ItemPromotionRepository itemPromotionRepository;
-
-    public ItemPriceCalculatorDefault(ItemRepository itemRepository, ItemPromotionRepository itemPromotionRepository) {
-        this.itemRepository = itemRepository;
-        this.itemPromotionRepository = itemPromotionRepository;
-    }
 
     @Override
     public Set<ItemFinalPrice> calculateFinalItemPrices(Set<ItemQuantity> items) {
@@ -33,7 +30,7 @@ public class ItemPriceCalculatorDefault implements ItemPriceCalculator {
     @Override
     public ItemFinalPrice calculateFinalItemPrice(ItemQuantity itemQuantity) {
         Item item = itemRepository.findById(itemQuantity.getId())
-                .orElseThrow(() -> new ItemNotFoundException("Item with id:" + itemQuantity.getId() + " not found"));
+                .orElseThrow(() -> new ItemNotFoundException(itemQuantity.getId()));
 
         BigDecimal finalPrice;
         if(item.getHasPromotion()) {
@@ -53,12 +50,11 @@ public class ItemPriceCalculatorDefault implements ItemPriceCalculator {
     }
 
     @Override
-    public BigDecimal calculateFinalPriceForItems(Set<ItemFinalPrice> items) {
+    public BigDecimal calculateSumPriceForItems(Set<ItemFinalPrice> items) {
         return items.stream()
                 .map(ItemFinalPrice::getFinalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
-
 
     @Override
     public BigDecimal calculatePromotionForItems(Set<ItemFinalPrice> items) {
@@ -69,6 +65,11 @@ public class ItemPriceCalculatorDefault implements ItemPriceCalculator {
                         )
                         .map(ItemPromotion::getDiscount)
                         .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal calculateFinalPriceForItems(BigDecimal sumPrice, BigDecimal promotion){
+        return sumPrice.subtract(promotion);
     }
 
 

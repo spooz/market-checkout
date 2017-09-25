@@ -23,7 +23,7 @@ public class ItemStorageInMemory implements ItemStorage {
     @Override
     public void store(ItemQuantity itemQuantity) {
         if(!itemRepository.exists(itemQuantity.getId())) {
-            throw new ItemNotFoundException("Item with id:" + itemQuantity.getId() + " not found");
+            throw new ItemNotFoundException(itemQuantity.getId());
         }
 
         if(items.putIfAbsent(itemQuantity.getId(), itemQuantity.getQuantity()) != null) {

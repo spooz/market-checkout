@@ -68,7 +68,7 @@ class ItemPriceCalculatorDefaultSpec extends Specification{
                 thrown ItemNotFoundException
     }
 
-    def "should  calculate final price for give items final prices"() {
+    def "should calculate sum price for give items final prices"() {
         given:
             def itemFinalPrice1 = new ItemFinalPrice("id1", 3, BigDecimal.valueOf(10))
             def itemFinalPrice2 = new ItemFinalPrice("id2", 5, BigDecimal.valueOf(10))
@@ -77,10 +77,10 @@ class ItemPriceCalculatorDefaultSpec extends Specification{
             def items = Sets.newLinkedHashSet(itemFinalPrice1, itemFinalPrice2, itemFinalPrice3)
 
         when:
-            def finalPrice = itemPriceCalculator.calculateFinalPriceForItems(items)
+            def sum = itemPriceCalculator.calculateSumPriceForItems(items)
 
         then:
-            finalPrice == BigDecimal.valueOf(30)
+            sum == BigDecimal.valueOf(30)
 
     }
 
@@ -102,7 +102,14 @@ class ItemPriceCalculatorDefaultSpec extends Specification{
 
         then:
             promotion ==  BigDecimal.valueOf(20)
+    }
 
+    def "should calculate final price with given sum and promotion"() {
+        when:
+            def finalPrice = itemPriceCalculator.calculateFinalPriceForItems(BigDecimal.valueOf(20), BigDecimal.valueOf(10))
+
+        then:
+            finalPrice == BigDecimal.valueOf(10)
     }
 
 }

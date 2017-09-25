@@ -1,7 +1,8 @@
 buildscript {
 	ext {
 		springBootVersion = '1.5.7.RELEASE'
-		groovyVersion = '2.4.12'
+		swaggerVersio = '2.4.0'
+		groovyVersion = '2.4.0'
 		spockVersion = '1.1-groovy-2.4'
 	}
 	repositories {
@@ -29,14 +30,13 @@ repositories {
 
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-actuator')
-	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
-	compile('de.flapdoodle.embed:de.flapdoodle.embed.mongo')
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
+
+	compile('de.flapdoodle.embed:de.flapdoodle.embed.mongo')
+
 	compile('com.google.guava:guava:23.0')
-
-	provided group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
-
+	compile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
 
 	compile("io.springfox:springfox-swagger2:2.4.0")
 	compile("io.springfox:springfox-swagger-ui:2.4.0")
