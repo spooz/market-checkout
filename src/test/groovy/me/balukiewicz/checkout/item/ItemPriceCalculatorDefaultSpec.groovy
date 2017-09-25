@@ -2,6 +2,7 @@ package me.balukiewicz.checkout.item
 
 import me.balukiewicz.checkout.item.calculator.ItemPriceCalculatorDefault
 import me.balukiewicz.checkout.item.domain.Item
+import me.balukiewicz.checkout.item.domain.ItemPromotion
 import me.balukiewicz.checkout.item.domain.ItemPromotionRepository
 import me.balukiewicz.checkout.item.domain.ItemRepository
 import me.balukiewicz.checkout.item.dto.ItemQuantity
@@ -62,6 +63,16 @@ class ItemPriceCalculatorDefaultSpec extends Specification{
 
             then:
                 thrown ItemNotFoundException
+    }
+
+    def "should calculate promotion with given set of items"() {
+        given:
+            def id1 = "id1"
+            def id2 = "id2"
+            def id3 = "id3"
+
+            itemPromotionRepository.findAll() >> [new ItemPromotion(id1, id2, 10), new ItemPromotion(id1, id3)]
+
     }
 
 }

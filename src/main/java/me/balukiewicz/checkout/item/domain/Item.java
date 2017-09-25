@@ -18,7 +18,9 @@ public class Item {
 
     private Double price;
 
-    private Long promUnit;
+    private Boolean promotion;
 
-    private Double promPrice;
+    private Long promotionUnit;
+
+    private Double promotionPrice;
 }

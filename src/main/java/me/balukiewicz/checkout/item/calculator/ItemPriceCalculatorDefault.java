@@ -1,6 +1,7 @@
 package me.balukiewicz.checkout.item.calculator;
 
 
+import me.balukiewicz.checkout.item.domain.ItemPromotion;
 import me.balukiewicz.checkout.item.exception.ItemNotFoundException;
 import me.balukiewicz.checkout.item.domain.Item;
 import me.balukiewicz.checkout.item.domain.ItemPromotionRepository;
@@ -30,20 +31,41 @@ public class ItemPriceCalculatorDefault implements ItemPriceCalculator {
     }
 
     public ItemFinalPrice calculateFinalPrice(ItemQuantity itemQuantity) {
-
         Item item = itemRepository.findById(itemQuantity.getId())
                 .orElseThrow(() -> new ItemNotFoundException("Item with id:" + itemQuantity.getId() + " not found"));
 
         BigDecimal finalPrice;
-        if(item.getPromUnit() != null && item.getPromUnit() > 0) {
-            finalPrice = BigDecimal.valueOf((itemQuantity.getQuantity() / item.getPromUnit()) * item.getPromPrice() +
-                    itemQuantity.getQuantity() / item.getPromUnit() * item.getPrice());
+        if(item.getPromotion()) {
+            finalPrice = getFinalPrice(itemQuantity.getQuantity(), item.getPrice(), item.getPromotionUnit(), item.getPromotionPrice());
         } else {
-            finalPrice = BigDecimal.valueOf(itemQuantity.getQuantity() * item.getPrice());
+            finalPrice = getFinalPrice(itemQuantity.getQuantity(), item.getPrice());
         }
-
         return new ItemFinalPrice(item.getId(), itemQuantity.getQuantity(), finalPrice);
     }
+
+    private BigDecimal getFinalPrice(Long quantity, Double price, Long promUnit, Double promPirce) {
+        return BigDecimal.valueOf((quantity / promUnit) * promPirce + (quantity / promUnit) * price);
+    }
+
+    private BigDecimal getFinalPrice(Long quantity, Double price) {
+        return BigDecimal.valueOf(quantity * price);
+    }
+
+    public BigDecimal calculatePromotion(Set<String> itemsIds) {
+        return BigDecimal.valueOf(
+                itemPromotionRepository.findAll().stream()
+                .filter(itemPromotion ->
+                        itemsIds.contains(itemPromotion.getItem_id_first()) && itemsIds.contains(itemPromotion.getItem_id_second())
+                )
+                .mapToDouble(ItemPromotion::getDiscount).sum());
+    }
+
+    public BigDecimal calculatePromotionForItems(Set<ItemFinalPrice> items) {
+        Set<String> itemIds = items.stream().map(ItemFinalPrice::getId).collect(Collectors.toSet());
+        return calculatePromotion(itemIds);
+    }
+
+
 
 
 }
