@@ -2,10 +2,13 @@ package me.balukiewicz.checkout.item.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Data
@@ -16,9 +19,12 @@ public class Item {
     @Id
     private String id;
 
-    private Double price;
+    @NotNull
+    private BigDecimal price;
 
-    private Long promUnit;
+    @NotNull
+    private Boolean hasPromotion;
 
-    private Double promPrice;
+    private Long promotionUnit;
+    private BigDecimal promotionPrice;
 }

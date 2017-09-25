@@ -89,25 +89,5 @@ class ItemStorageInMemorySpec extends Specification {
         then:
             returnedQuantity.isPresent() == false
     }
-    /*
-    def "should return stored item quantities"() {
-        given:
-            def id1 = "id1"
-            def quantity1 = 1L
-            def id2 = "id2"
-            def quantity2 = 1L
-
-            itemRepository.exists(id1) >> true
-            itemRepository.exists(id2) >> true
-
-            itemStorage.store(id1, quantity1)
-            itemStorage.store(id2, quantity2)
-
-        when:
-            def returnedQuantities = itemStorage.getAll()
-
-        then:
-
-    }          */
 
 }
