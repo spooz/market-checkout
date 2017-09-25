@@ -9,6 +9,7 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath('se.transmode.gradle:gradle-docker:1.2')
 	}
 }
 
@@ -16,6 +17,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'groovy'
+apply plugin: 'docker'
 
 group = 'me.balukiewicz'
 version = '0.0.1-SNAPSHOT'
@@ -29,6 +31,7 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
+	compile('de.flapdoodle.embed:de.flapdoodle.embed.mongo')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('com.google.guava:guava:23.0')
 	compile('org.projectlombok:lombok')
@@ -36,11 +39,21 @@ dependencies {
 	compile("io.springfox:springfox-swagger-ui:2.4.0")
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile('de.flapdoodle.embed:de.flapdoodle.embed.mongo')
 	testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.0'
 	testCompile group: 'org.spockframework', name: 'spock-core', version: '1.1-groovy-2.4'
 	testCompile group: 'org.spockframework', name: 'spock-spring', version: '1.1-groovy-2.4'
 	testCompile group: 'org.assertj', name: 'assertj-core', version: '3.8.0'
-
 }
+
+task buildDocker(type: Docker, dependsOn: build) {
+	applicationName = jar.baseName
+	dockerfile = file('docker/Dockerfile')
+	doFirst {
+		copy {
+			from jar
+			into "${stageDir}/target"
+		}
+	}
+}
+
 
