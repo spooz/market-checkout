@@ -21,14 +21,13 @@ class ItemCheckoutController {
     private final ItemFacade itemFacade;
 
     @PostMapping("/item")
-    ResponseEntity<Void> storeItem(@RequestBody @Valid ItemQuantity itemQuantity) {
+    void storeItem(@RequestBody @Valid ItemQuantity itemQuantity) {
         itemFacade.store(itemQuantity);
-        return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    ResponseEntity<CheckoutReport> checkout() {
-        return ResponseEntity.ok(itemFacade.checkout());
+    CheckoutReport checkout() {
+        return itemFacade.checkout();
     }
 
     @ExceptionHandler(ItemNotFoundException.class)

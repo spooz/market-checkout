@@ -24,18 +24,19 @@ public class ItemPriceCalculatorDefault implements ItemPriceCalculator {
     }
 
     @Override
-    public Set<ItemFinalPrice> calculateFinalPrice(Set<ItemQuantity> items) {
+    public Set<ItemFinalPrice> calculateFinalItemPrices(Set<ItemQuantity> items) {
         return items.stream()
-                .map(this::calculateFinalPrice)
+                .map(this::calculateFinalItemPrice)
                 .collect(Collectors.toSet());
     }
 
-    public ItemFinalPrice calculateFinalPrice(ItemQuantity itemQuantity) {
+    @Override
+    public ItemFinalPrice calculateFinalItemPrice(ItemQuantity itemQuantity) {
         Item item = itemRepository.findById(itemQuantity.getId())
                 .orElseThrow(() -> new ItemNotFoundException("Item with id:" + itemQuantity.getId() + " not found"));
 
         BigDecimal finalPrice;
-        if(item.getPromotion()) {
+        if(item.getHasPromotion()) {
             finalPrice = getFinalPrice(itemQuantity.getQuantity(), item.getPrice(), item.getPromotionUnit(), item.getPromotionPrice());
         } else {
             finalPrice = getFinalPrice(itemQuantity.getQuantity(), item.getPrice());
@@ -43,26 +44,31 @@ public class ItemPriceCalculatorDefault implements ItemPriceCalculator {
         return new ItemFinalPrice(item.getId(), itemQuantity.getQuantity(), finalPrice);
     }
 
-    private BigDecimal getFinalPrice(Long quantity, Double price, Long promUnit, Double promPirce) {
-        return BigDecimal.valueOf((quantity / promUnit) * promPirce + (quantity / promUnit) * price);
+    private BigDecimal getFinalPrice(Long quantity, BigDecimal price, Long promUnit, BigDecimal promPirce) {
+        return promPirce.multiply(BigDecimal.valueOf(quantity / promUnit)).add(price.multiply(BigDecimal.valueOf(quantity % promUnit)));
     }
 
-    private BigDecimal getFinalPrice(Long quantity, Double price) {
-        return BigDecimal.valueOf(quantity * price);
+    private BigDecimal getFinalPrice(Long quantity, BigDecimal price) {
+        return price.multiply(BigDecimal.valueOf(quantity));
     }
 
-    public BigDecimal calculatePromotion(Set<String> itemsIds) {
-        return BigDecimal.valueOf(
-                itemPromotionRepository.findAll().stream()
-                .filter(itemPromotion ->
-                        itemsIds.contains(itemPromotion.getItem_id_first()) && itemsIds.contains(itemPromotion.getItem_id_second())
-                )
-                .mapToDouble(ItemPromotion::getDiscount).sum());
+    @Override
+    public BigDecimal calculateFinalPriceForItems(Set<ItemFinalPrice> items) {
+        return items.stream()
+                .map(ItemFinalPrice::getFinalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+
+    @Override
     public BigDecimal calculatePromotionForItems(Set<ItemFinalPrice> items) {
-        Set<String> itemIds = items.stream().map(ItemFinalPrice::getId).collect(Collectors.toSet());
-        return calculatePromotion(itemIds);
+        Set<String> itemsIds = items.stream().map(ItemFinalPrice::getId).collect(Collectors.toSet());
+        return itemPromotionRepository.findAll().stream()
+                        .filter(itemPromotion ->
+                                itemsIds.contains(itemPromotion.getItemIdFirst()) && itemsIds.contains(itemPromotion.getItemIdSecond())
+                        )
+                        .map(ItemPromotion::getDiscount)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
 

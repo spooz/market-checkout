@@ -7,8 +7,7 @@ import java.util.Set;
 
 @Value
 public class CheckoutReport {
-
     private Set<ItemFinalPrice> itemFinalPrices;
+    private BigDecimal promotion;
     private BigDecimal finalPrice;
-
 }
