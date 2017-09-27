@@ -1,4 +1,4 @@
-package me.balukiewicz.checkout.item.controller;
+package me.balukiewicz.checkout.item;
 
 
 import lombok.AllArgsConstructor;

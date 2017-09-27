@@ -48,14 +48,36 @@ class CheckoutE2ESpec extends MockMvcSpec{
         then:
             response.status == 200
             content.itemFinalPrices.size() == 3
-            content.promotion == 5
-            content.finalPrice == 9
+            assertItemFinalPrices(content.itemFinalPrices)
+
+            content.promotion == 5.0
+            content.finalPrice == 9.0
 
         cleanup:
             itemRepository.deleteAll()
             itemPromotionRepository.deleteAll()
             itemStorage.clear()
 
+    }
+
+    private def assertItemFinalPrices(itemFinalPrices) {
+        itemFinalPrices.any {
+            it.id == "id1"
+            it.quantity == 10
+            it.finalPrice = 6.0
+        }
+
+        itemFinalPrices.any {
+            it.id == "id2"
+            it.quantity == 3
+            it.finalPrice = 3.0
+        }
+
+        itemFinalPrices.any {
+            it.id == "id3"
+            it.quantity == 5
+            it.finalPrice = 5.0
+        }
 
     }
 
